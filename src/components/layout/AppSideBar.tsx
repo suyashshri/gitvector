@@ -25,6 +25,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import useProject from "@/hooks/use-project";
 
 const navigation = [
   {
@@ -54,24 +55,10 @@ const navigation = [
   },
 ];
 
-const projects = [
-  {
-    name: "Project1",
-    href: "/qna/",
-  },
-  {
-    name: "Project1",
-    href: "/qna/",
-  },
-  {
-    name: "Project1",
-    href: "/qna/",
-  },
-];
-
 const AppSideBar = () => {
   const pathname = usePathname();
   const { open } = useSidebar();
+  const { projects, projectId, setProjectId } = useProject();
   return (
     <Sidebar
       variant="floating"
@@ -117,15 +104,20 @@ const AppSideBar = () => {
           <SidebarGroupLabel>Your Projects</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {projects.map((item) => (
+              {projects?.map((item) => (
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.href} className="flex items-center gap-2">
-                      <span className="w-5 h-5 flex items-center justify-center">
-                        {item.name[0]}
-                      </span>
+                    <div onClick={() => setProjectId(item.id)}>
+                      <div
+                        className={cn(
+                          "w-fit  rounded-sm border size-6 flex items-center justify-center text-sm",
+                          { "bg-primary text-white": item.id === projectId }
+                        )}
+                      >
+                        {item.name[0].toLocaleUpperCase()}
+                      </div>
                       <span>{item.name}</span>
-                    </Link>
+                    </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

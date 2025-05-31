@@ -1,9 +1,12 @@
 "use client";
+import { trpc } from "@/app/_trpc/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useRefetch from "@/hooks/use-refetch";
 import Image from "next/image";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type inputFormType = {
   projectName: string;
@@ -12,10 +15,30 @@ type inputFormType = {
 };
 
 const Page = () => {
-  const { register, handleSubmit } = useForm<inputFormType>();
+  const { register, handleSubmit, reset } = useForm<inputFormType>();
+  const createProject = trpc.project.createProject.useMutation();
+  const refetch = useRefetch();
 
   function onSubmit(data: inputFormType) {
-    console.log(data);
+    createProject.mutate(
+      {
+        name: data.projectName,
+        githubUrl: data.githubUrl,
+        githubToken: data.githubToken,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Project created successfully!");
+          refetch();
+          reset();
+        },
+        onError: (error) => {
+          console.log(error.message);
+
+          toast.error(`Error creating project: ${error.message}`);
+        },
+      }
+    );
     return true;
   }
   return (
@@ -49,7 +72,11 @@ const Page = () => {
                 {...register("githubToken")}
                 placeholder="Github Token (Optional)"
               />
-              <Button type="submit" className="w-fit ">
+              <Button
+                type="submit"
+                className="w-fit "
+                disabled={createProject.isPending}
+              >
                 Create Project
               </Button>
             </form>
