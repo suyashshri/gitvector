@@ -1,3 +1,4 @@
+import { pollCommits } from "@/lib/github";
 import prisma from "../db";
 import { isAuthenticated } from "../middleware/auth";
 import { publicProcedure, router } from "../trpc";
@@ -26,6 +27,7 @@ export const projectRouter = router({
           },
         },
       });
+      await pollCommits(project.id);
       return project;
     }),
 
@@ -42,4 +44,18 @@ export const projectRouter = router({
     });
     return projects;
   }),
+
+  getCommits: publicProcedure
+    .use(isAuthenticated)
+    .input(
+      z.object({
+        projectId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      await pollCommits(input.projectId).then().catch(console.error);
+      return await prisma.commit.findMany({
+        where: { projectId: input.projectId },
+      });
+    }),
 });

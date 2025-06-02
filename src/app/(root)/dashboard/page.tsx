@@ -1,4 +1,5 @@
 "use client";
+import CommitLog from "@/components/layout/CommitLog";
 import useProject from "@/hooks/use-project";
 import { ExternalLink, GithubIcon } from "lucide-react";
 import Link from "next/link";
@@ -38,7 +39,9 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mt-8"></div>
+      <div className="mt-8">
+        <CommitLog />
+      </div>
     </div>
   );
 }

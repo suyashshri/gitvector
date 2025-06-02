@@ -29,7 +29,7 @@ const MainContent = ({ children }: { children: React.ReactNode }) => {
         <UserButton />
       </div>
       <div className="h-2" />
-      <div className="bg-white border-sidebar-border border shadow rounded-md p-2 px-4 h-[calc(100vh-4.5rem)] overflow-auto">
+      <div className="bg-sidebar border-sidebar-border border shadow rounded-md p-2 px-4 h-[calc(100vh-4.5rem)] overflow-auto">
         {children}
       </div>
     </main>

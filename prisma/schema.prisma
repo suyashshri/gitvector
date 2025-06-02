@@ -38,10 +38,11 @@ model Project {
   githubUrl String
   // githubToken 
 
-  deleteAt       DateTime?
-  deleted        Boolean         @default(false)
-  userToProjects UserToProject[]
-  Commit         Commit[]
+  deleteAt            DateTime?
+  deleted             Boolean               @default(false)
+  userToProjects      UserToProject[]
+  Commit              Commit[]
+  SourceCodeEmbedding SourceCodeEmbedding[]
 }
 
 model UserToProject {
@@ -56,6 +57,18 @@ model UserToProject {
   project Project @relation(fields: [projectId], references: [id])
 
   @@unique([userId, projectId])
+}
+
+model SourceCodeEmbedding {
+  id String @id @default(uuid())
+
+  summaryEmbedding Unsupported("vector(768)")?
+  sourceCode       String
+  fileName         String
+  summary          String
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
 }
 
 model Commit {
