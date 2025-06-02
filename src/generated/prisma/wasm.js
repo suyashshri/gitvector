@@ -149,6 +149,14 @@ exports.Prisma.UserToProjectScalarFieldEnum = {
   projectId: 'projectId'
 };
 
+exports.Prisma.SourceCodeEmbeddingScalarFieldEnum = {
+  id: 'id',
+  sourceCode: 'sourceCode',
+  fileName: 'fileName',
+  summary: 'summary',
+  projectId: 'projectId'
+};
+
 exports.Prisma.CommitScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -182,6 +190,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Project: 'Project',
   UserToProject: 'UserToProject',
+  SourceCodeEmbedding: 'SourceCodeEmbedding',
   Commit: 'Commit'
 };
 

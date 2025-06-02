@@ -3,6 +3,7 @@ import prisma from "../db";
 import { isAuthenticated } from "../middleware/auth";
 import { publicProcedure, router } from "../trpc";
 import { z } from "zod";
+import { indexGithubRepo } from "@/lib/githubLoader";
 
 export const projectRouter = router({
   createProject: publicProcedure
@@ -27,6 +28,7 @@ export const projectRouter = router({
           },
         },
       });
+      await indexGithubRepo(project.id, input.githubUrl, input.githubToken);
       await pollCommits(project.id);
       return project;
     }),
